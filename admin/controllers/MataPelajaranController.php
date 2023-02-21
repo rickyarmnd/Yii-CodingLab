@@ -155,7 +155,9 @@ class MataPelajaranController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id);      
+        $tingkatKelas = ArrayHelper::map(RefTingkatKelas::find()->all(), 'id', 'tingkat_kelas');
+        $jurusan = ArrayHelper::map(RefJurusan::find()->all(), 'id' , 'jurusan'); 
 
         if($request->isAjax){
             /*
@@ -167,6 +169,8 @@ class MataPelajaranController extends Controller
                     'title'=> "Ubah MataPelajaran",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
+                        'tingkatKelas' => $tingkatKelas,
+                        'jurusan' => $jurusan,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -177,6 +181,8 @@ class MataPelajaranController extends Controller
                     'title'=> "MataPelajaran ",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
+                        'tingkatKelas' => $tingkatKelas,
+                        'jurusan' => $jurusan,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                             Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -186,6 +192,8 @@ class MataPelajaranController extends Controller
                     'title'=> "Ubah MataPelajaran ",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
+                        'tingkatKelas' => $tingkatKelas,
+                        'jurusan' => $jurusan,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -200,6 +208,8 @@ class MataPelajaranController extends Controller
             } else {
                 return $this->render('update', [
                     'model' => $model,
+                    'tingkatKelas' => $tingkatKelas,
+                    'jurusan' => $jurusan,
                 ]);
             }
         }

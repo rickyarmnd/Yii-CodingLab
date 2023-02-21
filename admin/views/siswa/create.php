@@ -10,7 +10,7 @@ use yii\helpers\Html;
 <div class="siswa-create">
     <?= $this->render('_form', [
         'model' => $model,
-        // 'kelas' => $kelas,
+        'kelas' => $kelas,
         // 'namaKelas' => $namaKelas,
     ]) ?>
 </div>

@@ -12,7 +12,7 @@ use yii\widgets\DetailView;
         'attributes' => [
             'id_guru',
             'id_mata_pelajaran',
-            'id',
+            // 'id',
         ],
     ]) ?>
     </div>

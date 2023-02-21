@@ -5,6 +5,9 @@ use yii\bootstrap4\Modal;
 use kartik\grid\GridView;
 use johnitvn\ajaxcrud\CrudAsset; 
 use johnitvn\ajaxcrud\BulkButtonWidget;
+use yii\widgets\DetailView;
+use yii\widgets\Pjax;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel siswa\models\BiodataSearch */
@@ -25,45 +28,35 @@ CrudAsset::register($this);
             <div class="card">
                 <div class="card-body">
                     <div id="ajaxCrudDatatable">
-                        <div id="table-responsive">
-                        <?=GridView::widget([
-                            'id'=>'crud-datatable',
-                            'pager' => [
-                                'firstPageLabel' => 'Awal',
-                                'lastPageLabel'  => 'Akhir'
-                            ],
-                            'dataProvider' => $dataProvider,
-                            // 'filterModel' => $searchModel,
-                            'pjax'=>true,
-                            'columns' => require(__DIR__.'/_columns.php'),
-                            'toolbar'=> [
-                                ['content'=> ''
-                                ],
-                            ],          
-                            'striped' => true,
-                            'condensed' => true,
-                            'responsive' => true,          
-                            'panel' => [
-                                // 'type' => 'primary', 
-                                // 'heading' => '<i class="glyphicon glyphicon-list"></i> Siswas listing',
-                                // 'before'=>Html::a('Tambah', ['create'],
-                                //     ['role'=>'modal-remote','title'=> 'Create new Siswas','class'=>'btn btn-default']),
-                                // // 'after'=>BulkButtonWidget::widget([
-                                //             'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
-                                //                 ["bulk-delete"] ,
-                                //                 [
-                                //                     "class"=>"btn btn-danger btn-xs",
-                                //                     'role'=>'modal-remote-bulk',
-                                //                     'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                //                     'data-request-method'=>'post',
-                                //                     'data-confirm-title'=>'Are you sure?',
-                                //                     'data-confirm-message'=>'Are you sure want to delete this item'
-                                //                 ]),
-                                //         ]).                        
-                                        '<div class="clearfix"></div>',
-                            ]
-                        ])?>
-                        </div>
+
+                    <?=// Html::a('Update', ['update','nis'=>$data->nis],[
+                        //'class' => 'btn btn-success text-white btn-block mb-3',
+                        // 'role'=>'modal-remote',
+                        // 'data-toggle'=>'tooltip',
+                        // 'title' => 'Update',
+                        Html::a('Update Siswa',
+                                 ['update' , 'nis' => $data->nis],
+                                 ['role'=>'modal-remote','title'=> 'Ubah Siswa',
+                                 'class'=>'btn btn-default'
+                        
+                    ]); ?>
+                    <div class="table-responsive">
+                    <?php Pjax::begin(['id'=>'id-pjax']); ?>
+
+                    <?= DetailView::widget([
+                        'model' => $data,
+                        'attributes' => [
+                            // 'id',
+                            'nis',
+                            'nama',
+                            'alamat:ntext',
+                            'id_kelas',
+                            'tempat_lahir',
+                            'tanggal_lahir',
+                        ],
+                    ]) ?>
+                    <?php Pjax::end(); ?>
+                    </div>
                     </div>
                 </div>
             </div>

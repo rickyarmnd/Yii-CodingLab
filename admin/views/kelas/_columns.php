@@ -52,6 +52,38 @@ return [
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
+        'header' => 'Data Siswa',
+        'template' => '{btn_aksi}',
+        'buttons' => [
+            "btn_aksi" => function ($url, $model, $key) {
+                return Html::a('Data Siswa', ['/siswa/index' , 'id_kelas'=> $model->id] , [
+                    'class' => 'btn btn-success btn-block',
+                    'role'  => 'modal-remote',
+                    'title' => 'Lihat',
+                    'data-toggle' => 'tooltip'
+                ]);
+            },
+
+        ]
+    ],
+    [
+        'class' => 'kartik\grid\ActionColumn',
+        'header' => 'Peta Siswa',
+        'template' => '{tambah_siswa}',
+        'buttons' => [
+            "tambah_siswa" => function ($url, $model, $key) {
+                return Html::a('Peta Siswa', ['peta-siswa' , 'id_kelas'=> $model->id ,'nama_kelas' => $model->nama_kelas] , [
+                    'class' => 'btn btn-success btn-block',
+                    'role'  => 'modal-remote',
+                    'title' => 'Lihat',
+                    'data-toggle' => 'tooltip'
+                ]);
+            },
+
+        ]
+    ],
+    [
+        'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) { 

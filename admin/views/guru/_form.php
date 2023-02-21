@@ -13,8 +13,6 @@ use yii\bootstrap4\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'nama_guru')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'id_user')->textInput(['maxlength' => true]) ?>
-
   
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">

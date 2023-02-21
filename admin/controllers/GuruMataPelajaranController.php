@@ -68,7 +68,7 @@ class GuruMataPelajaranController extends Controller
                         'model' => $this->findModel($id_guru),
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                            Html::a('Ubah',['update','id' => $id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                            Html::a('Ubah',['update','id' => $id_guru],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -152,10 +152,12 @@ class GuruMataPelajaranController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id_guru)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id_guru);       
+        $namaGuru = ArrayHelper::map(Guru::find()->all(), 'id', 'nama_guru');
+        $mataPelajaran = ArrayHelper::map(MataPelajaran::find()->all(),'id', 'mata_pelajaran');
 
         if($request->isAjax){
             /*
@@ -167,6 +169,8 @@ class GuruMataPelajaranController extends Controller
                     'title'=> "Ubah GuruMataPelajaran",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
+                        'namaGuru' => $namaGuru,
+                        'mataPelajaran' => $mataPelajaran,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -177,15 +181,19 @@ class GuruMataPelajaranController extends Controller
                     'title'=> "GuruMataPelajaran ",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
+                        'namaGuru' => $namaGuru,
+                        'mataPelajaran' => $mataPelajaran,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                            Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                            Html::a('Ubah',['update', 'id' => $model->id_guru],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                  return [
                     'title'=> "Ubah GuruMataPelajaran ",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
+                        'namaGuru' => $namaGuru,
+                        'mataPelajaran' => $mataPelajaran,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -196,10 +204,12 @@ class GuruMataPelajaranController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id_guru]);
             } else {
                 return $this->render('update', [
                     'model' => $model,
+                    'namaGuru' => $namaGuru,
+                    'mataPelajaran' => $mataPelajaran,
                 ]);
             }
         }
@@ -212,10 +222,10 @@ class GuruMataPelajaranController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id_guru)
     {
         $request = Yii::$app->request;
-        $this->findModel($id)->delete();
+        $this->findModel($id_guru)->delete();
 
         if($request->isAjax){
             /*
@@ -273,7 +283,7 @@ class GuruMataPelajaranController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = GuruMataPelajaran::findOne($id)) !== null) {
+        if (($model = GuruMataPelajaran::find()->where(['id_guru' => $id])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

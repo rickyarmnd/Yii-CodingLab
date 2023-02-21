@@ -12,11 +12,15 @@ use yii\bootstrap4\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->field($model, 'id_tahun_ajaran')->textInput() ?>
+
     <?= $form->field($model, 'nama_kelas')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'id_tingkat')->textInput() ?>
 
     <?= $form->field($model, 'id_wali_kelas')->textInput() ?>
+
+    <?= $form->field($model, 'id_jurusan')->textInput() ?>
 
   
 	<?php if (!Yii::$app->request->isAjax){ ?>

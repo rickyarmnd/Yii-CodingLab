@@ -9,7 +9,10 @@ use yii\widgets\DetailView;
     <div class="table-responsive">
     <?= DetailView::widget([
         'model' => $model,
-        'tahunAjaran' => $tahunAjaran,
+        // 'tahunAjaran' => $tahunAjaran,
+        // 'tingkatKelas' => $tingkatKelas,
+        // 'waliKelas' => $waliKelas,
+        // 'jurusan' => $jurusan,
 
         'attributes' => [
             'id',

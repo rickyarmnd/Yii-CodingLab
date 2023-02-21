@@ -9,6 +9,9 @@ use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
+use kartik\icons\Icon;
+
+Icon::map($this);
 
 AppAsset::register($this);
 ?>
@@ -38,7 +41,7 @@ AppAsset::register($this);
         ]);
         $menuItems = [
             
-
+            ['label' => 'Dashboard', 'url' => ['/site/index']],
             (Yii::$app->user->can('Siswa')) ? ['label' => 'Biodata', 'url' => ['/biodata/index']] : '',
 
             ['label' => 'Riwayat Kelas', 'url' => ['/siswa-rw-kelas/index']],

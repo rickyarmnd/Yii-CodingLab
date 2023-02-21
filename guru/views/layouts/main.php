@@ -37,9 +37,11 @@ AppAsset::register($this);
             ],
         ]);
         $menuItems = [
-            ['label' => 'Lihat Siswa', 'url' => ['/siswa/index']],
-            ['label' => 'Lihat Kelas', 'url' => ['/kelas/index']],
-            ['label' => 'Tambah Pelajaran', 'url' => ['/mata-pelajaran/index']],
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Lihat Siswa', 'url' => ['/lihat-siswa/index']],
+            ['label' => 'Mata Pelajaran', 'url' => ['/tambah-mata-pelajaran/index']],
+            ['label' => 'Daftar Seluruh Kelas', 'url' => ['/daftar-kelas/index']],
+   
         ];
         if (Yii::$app->user->isGuest) {
             $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

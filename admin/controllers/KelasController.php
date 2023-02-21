@@ -4,11 +4,15 @@ namespace admin\controllers;
 
 use Yii;
 use common\models\Kelas;
+use common\models\SiswaRwKelas;
+use common\models\Siswa;
 use common\models\RefTahunAjaran;
 use common\models\RefTingkatKelas;
 use common\models\Guru;
 use common\models\RefJurusan;
 use admin\models\KelasSearch;
+use admin\models\PetaSiswa;
+use admin\models\SiswaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -59,6 +63,85 @@ class KelasController extends Controller
      * @param integer $id
      * @return mixed
      */
+
+
+    public function actionPetaSiswa($id_kelas , $nama_kelas)
+    {
+        $request = Yii::$app->request;
+        $siswa = Siswa::find()->where(['id_kelas' => $id_kelas])->all();
+        $model = new Siswa();
+        $listSiswa = Siswa::find()
+        ->where(['!=','id_kelas',$id_kelas])
+        ->all();
+        $saveData = new PetaSiswa();
+
+        $id_kelas = $id_kelas;        
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+
+                return [
+                    'title'=> "Kelas",
+                    'content'=>$this->renderAjax('peta-siswa', [
+                        'siswa' => $siswa,
+                        'model' => $model,
+                        'id_kelas' => $id_kelas,
+                        'nama_kelas' => $nama_kelas,
+                        'listSiswa' => $listSiswa,
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                    Html::button('Simpan' , ['class' => 'btn btn-primary' ,'type'=>'submit'])
+                ];    
+                    }else if($request->post() && $saveData->tambahSiswaKelas($request->post())){
+            
+            
+                    return[
+                        'title' => "Daftar Siswa",
+                        'content' => $this->renderAjax('peta-siswa',[
+                            'model' => $model,
+                            'nama_kelas' => $nama_kelas,
+                            'id_kelas' => $id_kelas,
+                            'listSiswa' => $listSiswa,
+                            'siswa' => Siswa::find()->where(['id_kelas' => $id_kelas])->all(),
+
+
+                        
+                        ]),
+                        'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                        Html::a('Tambah Siswa', ['peta-siswa', 'id_kelas' => $id_kelas], ['class' => 'btn btn-primary' ,'role' => 'modal-remote'])
+                    ]; 
+                                            }else{
+                                                return [
+                                                    'title'=> "Kelas",
+                                                    'content'=>$this->renderAjax('peta-siswa', [
+                                                        'siswa' => $siswa,
+                                                        'model' => $model,
+                                                        'id_kelas' => $id_kelas,
+                                                        'nama_kelas' => $nama_kelas,
+                                                        'listSiswa' => $listSiswa,
+                                                    ]),
+                                                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+                                                ];  
+                                            }
+        }else{
+            if ($request->post() && $saveData->tambahSiswaKelas($request->post())) {
+                return $this->redirect(['index']);
+            } else {
+                return $this->render('peta-siswa', [
+                    'siswa' => $siswa,
+                    'model' => $model,
+                    'id_kelas' => $id_kelas,
+                    'nama_kelas' => $nama_kelas,
+                    'listSiswa' => $listSiswa,
+                ]);
+            }
+        }
+    }
+
+
+
+
+
     public function actionView($id)
     {   
         $request = Yii::$app->request;
@@ -85,6 +168,34 @@ class KelasController extends Controller
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+
+public function actionDataSiswa($id)
+     {    
+         $request = Yii::$app->request;
+         $searchModel = new SiswaSearch();
+         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+         $dataProvider->query->andFilterWhere(['id_kelas' => $id]);
+
+         if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'title'=> "Kelas ",
+                    'content'=>$this->renderAjax('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                            Html::a('Ubah',['update','id' => $id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];    
+        }else{
+            return $this->render('admin/siswa/index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+     }
+
+    
     public function actionCreate()
     {
         $request = Yii::$app->request;
@@ -170,6 +281,10 @@ class KelasController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
+        $tahunAjaran = ArrayHelper::map(RefTahunAjaran::find()->all(), 'id' , 'tahun_ajaran');
+        $tingkatKelas = ArrayHelper::map(RefTingkatKelas::find()->all(),'id' ,'tingkat_kelas');
+        $waliKelas = ArrayHelper::map(Guru::find()->all(), 'id' , 'nama_guru');
+        $jurusan = ArrayHelper::map(RefJurusan::find()->all(), 'id' , 'jurusan');
 
         if($request->isAjax){
             /*
@@ -181,6 +296,10 @@ class KelasController extends Controller
                     'title'=> "Ubah Kelas",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
+                        'tahunAjaran' => $tahunAjaran,
+                        'tingkatKelas' => $tingkatKelas,
+                        'waliKelas' => $waliKelas,
+                        'jurusan' => $jurusan,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -191,6 +310,10 @@ class KelasController extends Controller
                     'title'=> "Kelas ",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
+                        'tahunAjaran' => $tahunAjaran,
+                        'tingkatKelas' => $tingkatKelas,
+                        'waliKelas' => $waliKelas,
+                        'jurusan' => $jurusan,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                             Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -200,6 +323,10 @@ class KelasController extends Controller
                     'title'=> "Ubah Kelas ",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
+                        'tahunAjaran' => $tahunAjaran,
+                        'tingkatKelas' => $tingkatKelas,
+                        'waliKelas' => $waliKelas,
+                        'jurusan' => $jurusan,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])

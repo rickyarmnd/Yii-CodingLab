@@ -16,40 +16,12 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'nama_kelas',
+        'attribute'=>'nama_guru',
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'label' => 'Tingkat Kelas',
-        'attribute'=>'id_tingkat',
-        'value' => function($model){
-            return $model->idTingkat->tingkat_kelas;
-        }
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'label' => 'Wali Kelas',
-        'attribute'=>'id_wali_kelas',
-        'value' => function($model){
-            return $model->waliKelas->nama_guru;
-        }
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'label' => 'Tahun Ajaran',
-        'attribute'=>'id_tahun_ajaran',
-        'value' => function($model){
-            return $model->tahunAjaran->tahun_ajaran;
-        }
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'label' => 'Jurusan',
-        'attribute'=>'id_jurusan',
-        'value'=> function($model){
-            return $model->jurusan->jurusan;
-        }
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'id_user',
+    // ],
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,

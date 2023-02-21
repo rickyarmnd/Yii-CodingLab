@@ -4,15 +4,17 @@ use yii\helpers\Url;
 use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\MataPelajaran */
+/* @var $model common\models\Guru */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="mata-pelajaran-form">
+<div class="guru-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'mata_pelajaran')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'nama_guru')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'id_user')->textInput() ?>
 
   
 	<?php if (!Yii::$app->request->isAjax){ ?>

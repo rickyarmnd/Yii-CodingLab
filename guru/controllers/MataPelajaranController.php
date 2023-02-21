@@ -85,6 +85,9 @@ class MataPelajaranController extends Controller
     {
         $request = Yii::$app->request;
         $model = new MataPelajaran();  
+        $jurusan = ArrayHelper::map(RefJurusan::find()->all(), 'id' , 'jurusan');
+        $tingkatKelas = ArrayHelper::map(RefTingkatKelas::find()->all(), 'id', 'tingkat_kelas');
+
 
         if($request->isAjax){
             /*
@@ -96,6 +99,8 @@ class MataPelajaranController extends Controller
                     'title'=> "Tambah MataPelajaran",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
+                        'tingkatKelas' => $tingkatKelas,
+                        'jurusan' => $jurusan,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -115,6 +120,8 @@ class MataPelajaranController extends Controller
                     'title'=> "Tambah MataPelajaran",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
+                        'tingkatKelas' => $tingkatKelas,
+                        'jurusan' => $jurusan,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -130,6 +137,8 @@ class MataPelajaranController extends Controller
             } else {
                 return $this->render('create', [
                     'model' => $model,
+                    'tingkatKelas' => $tingkatKelas,
+                    'jurusan' => $jurusan,
                 ]);
             }
         }

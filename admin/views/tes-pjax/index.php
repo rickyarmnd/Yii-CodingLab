@@ -7,10 +7,10 @@ use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel guru\models\SiswaSearch */
+/* @var $searchModel admin\models\TesPjaxSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Siswas';
+$this->title = 'Gurus';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
@@ -33,21 +33,22 @@ CrudAsset::register($this);
                                 'lastPageLabel'  => 'Akhir'
                             ],
                             'dataProvider' => $dataProvider,
-                            // 'filterModel' => $searchModel,
+                            'filterModel' => $searchModel,
                             'pjax'=>true,
                             'columns' => require(__DIR__.'/_columns.php'),
                             'toolbar'=> [
-                                ''
-                                
+                                ['content'=>
+                                  ''
+                                ],
                             ],          
                             'striped' => true,
                             'condensed' => true,
                             'responsive' => true,          
                             'panel' => [
                                 // 'type' => 'primary', 
-                                // 'heading' => '<i class="glyphicon glyphicon-list"></i> Siswas listing',
-                                // 'before'=>Html::a('Tambah', ['create'],
-                                //     ['role'=>'modal-remote','title'=> 'Create new Siswas','class'=>'btn btn-default']),
+                                // 'heading' => '<i class="glyphicon glyphicon-list"></i> Gurus listing',
+                                'before'=>Html::a('Tambah', ['create'],
+                                    ['role'=>'modal-remote','title'=> 'Create new Gurus','class'=>'btn btn-default']),
                                 // 'after'=>BulkButtonWidget::widget([
                                 //             'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
                                 //                 ["bulk-delete"] ,

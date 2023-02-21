@@ -18,7 +18,7 @@ class MataPelajaranSearch extends MataPelajaran
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id', 'id_tingkat_kelas', 'id_jurusan'], 'integer'],
             [['mata_pelajaran'], 'safe'],
         ];
     }
@@ -57,6 +57,8 @@ class MataPelajaranSearch extends MataPelajaran
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'id_tingkat_kelas' => $this->id_tingkat_kelas,
+            'id_jurusan' => $this->id_jurusan,
         ]);
 
         $query->andFilterWhere(['like', 'mata_pelajaran', $this->mata_pelajaran]);

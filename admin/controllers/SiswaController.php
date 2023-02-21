@@ -5,6 +5,9 @@ namespace admin\controllers;
 use Yii;
 use common\models\Siswa;
 use common\models\Kelas;
+use common\models\User;
+use admin\models\BuatAkun;
+use common\models\AuthAssignment;
 use common\models\SiswaRwKelas;
 use admin\models\SiswaSearch;
 use yii\web\Controller;
@@ -40,18 +43,103 @@ class SiswaController extends Controller
      * Lists all Siswa models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id_kelas=null)
     {    
         $id_user = Yii::$app->user->identity->id;
-            // var_dump($id_user);
-            // die;
+           
         $searchModel = new SiswaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andFilterWhere(['id_kelas' => $id_kelas]);
+        
+        $request = Yii::$app->request;
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'title'=> "Siswa ",
+                    'content'=>$this->renderAjax('index', [
+                    
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+                 ];    
+        }else{
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]); 
+        }
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        
+    }
+    public function actionAddAkun($id)
+    {
+        $request = Yii::$app->request;
+        $model = new BuatAkun();
+
+        if($request->isAjax){ 
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Tambah Akun Siswa",
+                    'content'=>$this->renderAjax('add-akun', [
+                        'model' => $model
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];         
+            }else if($model->load($request->post()) && $model->signup($id, "Siswa")){
+                return [
+                    'forceReload'=>'#crud-datatable-pjax',
+                    'title'=> "Tambah Akun Siswa",
+                    'content'=>'<span class="text-success">Berhasil Membuat Akun</span>',
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+
+                ];         
+            }else{           
+                return [
+                    'title'=> "Tambah Siswa",
+                    'content'=>$this->renderAjax('add-akun', [
+                        'model' => $model
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];         
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->signup($id, "Siswa")) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }
+    }
+
+    public function actionViewAkun($id)
+    {
+        $request = Yii::$app->request;
+        $getAkun = User::findOne($id);
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title'=> "Detail Akun",
+                'content'=>$this->renderAjax('view-akun', [
+                    'model' => User::findOne($id),
+                ]),
+                'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+            ];    
+        }else{
+            return $this->render('view-akun', [
+                'model' => User::findOne($id),
+            ]);
+        }
     }
 
 
@@ -93,15 +181,10 @@ class SiswaController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $namaKelas = ArrayHelper::map(Kelas::find()->all(),'id' , 'nama_kelas');
-        $model = new Siswa();
-        $kelas = new SiswaRwKelas(); //ArrayHelper::map($Kelas::find()->all(), 'id' , 'nama_kelas');
+        $model = new Siswa();  
+        $kelas = ArrayHelper::map(Kelas::find()->all(),'id' , 'nama_kelas');
 
-        // echo '<pre>';
-        // print_r($_POST);
-        // die();
-
-        if($request->isAjax){
+        if($request->isAjax){ 
             /*
             *   Process for ajax request
             */
@@ -111,58 +194,48 @@ class SiswaController extends Controller
                     'title'=> "Tambah Siswa",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
-                        'kelas' => $kelas,
-                        'namaKelas' => $namaKelas,
-                   
+                        'kelas' => $kelas
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
-            }else if($model->load($request->post()) && $model->save() && $kelas->load($request->post()) && $kelas->save()){
-                    // echo '<pre>';
-                    // print_r($kelas);
-                    // die();
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
 
+                ];         
+            }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Tambah Siswa",
                     'content'=>'<span class="text-success">Create Siswa berhasil</span>',
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                            Html::a('Tambah Lagi',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-        
+                    Html::a('Tambah Lagi',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+
                 ];         
             }else{           
                 return [
                     'title'=> "Tambah Siswa",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
-                        'kelas' => $kelas,   
-                        'namaKelas' => $namaKelas,
-                  
+                        'kelas' => $kelas
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-        
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
                 ];         
             }
         }else{
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save()  && $kelas->load($request->post()) && $kelas->save() ) {
+            if ($model->load($request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
-                return $this->redirect(['view', 'id' => $kelas->id]);
-
             } else {
                 return $this->render('create', [
                     'model' => $model,
-                    'kelas' => $kelas,
-                    'namaKelas' => $namaKelas,
+                    'kelas' => $kelas
+
                 ]);
             }
         }
-       
+
     }
 
     /**

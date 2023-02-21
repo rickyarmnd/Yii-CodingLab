@@ -7,7 +7,7 @@ use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel guru\models\MataPelajaranSearch */
+/* @var $searchModel guru\models\TambahMataPelajaranSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Mata Pelajarans';
@@ -33,11 +33,13 @@ CrudAsset::register($this);
                                 'lastPageLabel'  => 'Akhir'
                             ],
                             'dataProvider' => $dataProvider,
-                            'filterModel' => $searchModel,
+                            // 'filterModel' => $searchModel,
                             'pjax'=>true,
                             'columns' => require(__DIR__.'/_columns.php'),
                             'toolbar'=> [
-                                ''
+                                ['content'=>
+                                 ''
+                                ],
                             ],          
                             'striped' => true,
                             'condensed' => true,

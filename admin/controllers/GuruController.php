@@ -4,6 +4,10 @@ namespace admin\controllers;
 
 use Yii;
 use common\models\Guru;
+use common\models\User;
+use admin\models\BuatAkun;
+use common\models\AuthAssignment;
+use admin\models\SignUpForm;
 use admin\models\GuruSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -55,6 +59,119 @@ class GuruController extends Controller
      * @param integer $id
      * @return mixed
      */
+
+    //  public function actionDaftarAkun($id)
+    //  {
+    //     $request = Yii::$app->request;
+    //     $model = new SignUpForm();
+    //     $namaGuru = Guru::find()->where(['id' => $id])->one();
+
+    //     if($request->isAjax){
+    //         Yii::$app->response->format = Response::FORMAT_JSON;
+    //         if($request->isGet) {
+    //         return [
+    //                 'title'=> "Guru ",
+    //                 'content'=>$this->renderAjax('daftar-akun', [
+    //                     'model' => $model,
+    //                     'namaGuru' => $namaGuru,
+                        
+    //                 ]),
+    //                 'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+    //                         Html::a('Tambah Akun ',['update'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+    //             ];
+            
+    //         }else if($model->load($request->post()) && $model->signup($id, "Guru")){
+    //             return [
+    //                 'forceReload'=>'#crud-datatable-pjax',
+    //                 'title'=> "Tambah Akun Guru",
+    //                 'content'=>'<span class="text-success">Berhasil Membuat Akun</span>',
+    //                 'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+
+    //             ];
+    //         }else{
+    //             if ($model->load($request->post()) && $model->signup($id, "Guru")) {
+    //                 return $this->redirect(['view', 'id' => $model->id]);
+    //             } else {
+    //                 return $this->render('daftar-akun', [
+    //                     'model' => $model,
+    //                     'namaGuru' => $namaGuru,
+    //                 ]);
+    //             }
+    //         }
+    //     }
+    //     }
+    public function actionViewAkun($id)
+    {
+        $request = Yii::$app->request;
+        $getAkun = User::findOne($id);
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title'=> "Detail Akun",
+                'content'=>$this->renderAjax('view-akun', [
+                    'model' => User::findOne($id),
+                ]),
+                'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+            ];    
+        }else{
+            return $this->render('view-akun', [
+                'model' => User::findOne($id),
+            ]);
+        }
+    }
+    public function actionAddAkun($id)
+    {
+        $request = Yii::$app->request;
+        $model = new BuatAkun();
+        
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Tambah Akun Guru",
+                    'content'=>$this->renderAjax('add-akun', [
+                        'model' => $model
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];         
+            }else if($model->load($request->post()) && $model->signup($id, "Guru")){
+
+                return [
+                    'forceReload'=>'#crud-datatable-pjax',
+                    'title'=> "Tambah Akun Guru",
+                    'content'=>'<span class="text-success">Berhasil Membuat Akun</span>',
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+
+                ];  
+            }else{           
+                return [
+                    'title'=> "Tambah Guru",
+                    'content'=>$this->renderAjax('add-akun', [
+                        'model' => $model
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];         
+            }
+        }else{
+            if ($model->load($request->post()) && $model->signup($id, "Guru")) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('add-akun', [
+                    'model' => $model
+                ]);
+            }
+        }
+
+    }
+
+
     public function actionView($id)
     {   
         $request = Yii::$app->request;

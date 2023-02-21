@@ -16,36 +16,24 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'nis',
+        'attribute'=>'mata_pelajaran',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'nama',
+        'label' => 'Tingkat Kelas',
+        'attribute'=>'id_tingkat_kelas',
+        'value' => function($model){
+            return $model->tingkatKelas->tingkat_kelas;
+        }
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'alamat',
+        'label' => 'Jurusan',
+        'attribute'=>'id_jurusan',
+        'value' => function($model){
+            return $model->namaJurusan->jurusan;
+        }
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'header' => 'Nama Kelas',
-        'attribute'=>'id_kelas',
-        // 'value' => function($model){
-        //     return $model->namaKelas->nama_kelas;
-        // }
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'tempat_lahir',
-    ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'tanggal_lahir',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'id_user',
-    // ],
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,

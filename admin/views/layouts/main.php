@@ -42,6 +42,7 @@ AppAsset::register($this);
             ['label' => 'Daftar Kelas', 'url' => ['/kelas/index']],
             ['label' => 'Mata Pelajaran', 'url' => ['/mata-pelajaran/index']],
             ['label' => 'Guru - Mata Pelajaran', 'url' => ['/guru-mata-pelajaran/index']],
+            ['label' => 'Tes PJAX', 'url' => ['tes-pjax/index']],
         ];
         if (Yii::$app->user->isGuest) {
             $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

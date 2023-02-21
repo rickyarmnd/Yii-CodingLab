@@ -7,7 +7,6 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
 /**
@@ -22,7 +21,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
@@ -36,20 +35,14 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
             ],
         ];
     }
-    // public function beforeAction($action)
-    // {
-    //     if (!Yii::$app->user->can('Admin')) {
-    //         throw new ForbiddenHttpException(Yii::t('yii', 'Jangan Lasak.'));
-    //         // return $this->render('pesan');
-    //     }
-    // }
+
     /**
      * {@inheritdoc}
      */
@@ -57,7 +50,7 @@ class SiteController extends Controller
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => \yii\web\ErrorAction::class,
             ],
         ];
     }
@@ -69,7 +62,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-
         return $this->render('index');
     }
 

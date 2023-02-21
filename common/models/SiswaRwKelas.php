@@ -31,9 +31,9 @@ class SiswaRwKelas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_siswa', 'id_kelas', 'id_tingkat', 'id_wali_kelas'], 'default', 'value' => null],
-            [['id_siswa', 'id_kelas', 'id_tingkat', 'id_wali_kelas'], 'integer'],
-            [['tahun_ajaran', 'nama_kelas'], 'string', 'max' => 25],
+            [['id_siswa', 'id_kelas', 'id_tingkat', 'id_tahun_ajaran', 'id_wali_kelas'], 'default', 'value' => null],
+            [['id_siswa', 'id_kelas', 'id_tingkat', 'id_tahun_ajaran','id_wali_kelas'], 'integer'],
+            [[ 'nama_kelas'], 'string', 'max' => 25],
         ];
     }
 
@@ -46,7 +46,7 @@ class SiswaRwKelas extends \yii\db\ActiveRecord
             'id' => 'ID',
             'id_siswa' => 'Id Siswa',
             'id_kelas' => 'Id Kelas',
-            'tahun_ajaran' => 'Tahun Ajaran',
+            'id_tahun_ajaran' => 'Id Tahun Ajaran',
             'nama_kelas' => 'Nama Kelas',
             'id_tingkat' => 'Id Tingkat',
             'id_wali_kelas' => 'Id Wali Kelas',

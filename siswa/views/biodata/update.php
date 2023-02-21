@@ -2,15 +2,17 @@
 
 use yii\helpers\Html;
 
+
 /* @var $this yii\web\View */
 /* @var $model common\models\Siswa */
 ?>
-<div class="siswa-update">
+<div class="biodata-update">
 
     <?= $this->render('_form', [
         'model' => $model,
-        'dataKelas' => $dataKelas,
+        // 'dataKelas' => $dataKelas,
 
     ]) ?>
-
+</div>
+</div>
 </div>

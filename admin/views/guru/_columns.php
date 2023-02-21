@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 return [
     //[
@@ -19,8 +20,28 @@ return [
         'attribute'=>'nama_guru',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'buat_akun',
+        'class'=>'\kartik\grid\ActionColumn',
+        'header'=>'Buat Akun',
+        'template' => '{btn_aksi}',
+        'buttons' =>[
+            "btn_aksi" => function($url, $model,$key){
+                if ($model->id_user == 0) {
+                    return Html::a('Buat Akun', ['add-akun', 'id' => $model->id], [
+                        'class' => 'btn btn-success text-white btn-block',
+                        'role' => 'modal-remote',
+                        'title' => 'Buat Akun',
+                        'data-toggle' => 'tooltip'
+                    ]);
+                }else{
+                    return Html::a('Lihat Akun', ['view-akun', 'id' => $model->id_user], [
+                        'class' => 'btn btn-primary text-white btn-block',
+                        'role' => 'modal-remote',
+                        'title' => 'Lihat Akun',
+                        'data-toggle' => 'tooltip'
+                    ]);
+                }
+            }
+        ]
     ],
     // [
     //     'class'=>'\kartik\grid\DataColumn',
