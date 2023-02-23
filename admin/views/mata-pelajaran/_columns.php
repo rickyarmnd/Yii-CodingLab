@@ -38,6 +38,23 @@ return [
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
+        'header' => 'Guru Pengampu',
+        'template' => '{btn_aksi}',
+        'buttons' => [
+            "btn_aksi" => function ($url, $model, $key) {
+                return Html::a('Lihat Guru', ['guru-pelajaran/index', 'id_pelajaran' => $model->id], [
+                    'class' => 'btn btn-primary btn-block',
+                    // 'role' => 'modal-remote',
+                    'title' => 'Lihat',
+                    'data-toggle' => 'tooltip'
+                ]);
+
+            },
+
+        ]
+    ],
+    [
+        'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) { 

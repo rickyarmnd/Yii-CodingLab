@@ -52,23 +52,23 @@ return [
             return $model->jurusan->jurusan;
         }
     ],
-    [
-    'class' => 'kartik\grid\ActionColumn',
-    'header' => 'Aksi',
-    'template' => '{view} {edit}',
-    'buttons' => [
-        "view" => function ($url, $model, $key) {
-            return Html::a('<i class = "glyphicon glyphicon-eye-open"></i>', ['view', 'id' => $model->id], [
-
-                'role' => 'modal-remote',
-                'title' => 'Lihat',
-                'data-toggle' => 'tooltip'
-            ]);
-      
-        }
-    ]
-    ],
     // [
+    // 'class' => 'kartik\grid\ActionColumn',
+    // 'header' => 'Aksi',
+    // 'template' => '{view} {edit}',
+    // 'buttons' => [
+    //     "view" => function ($url, $model, $key) {
+    //         return Html::a('<i class = "glyphicon glyphicon-eye-open"></i>', ['view', 'id' => $model->id], [
+
+    //             'role' => 'modal-remote',
+    //             'title' => 'Lihat',
+    //             'data-toggle' => 'tooltip'
+    //         ]);
+      
+    //     }
+    // ]
+    // ],
+    // // [
     //     'class' => 'kartik\grid\ActionColumn',
     //     'dropdown' => false,
     //     'vAlign'=>'middle',

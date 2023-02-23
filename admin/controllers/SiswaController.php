@@ -249,6 +249,8 @@ class SiswaController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);  
+        $kelas = ArrayHelper::map(Kelas::find()->all(),'id' , 'nama_kelas');
+
         // $kelas = new SiswaRwKelas();
         // $kelas = $this->findModel($id);     
 
@@ -262,12 +264,12 @@ class SiswaController extends Controller
                     'title'=> "Ubah Siswa dan Kelas",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
-                        // 'kelas' => $kelas,
+                        'kelas' => $kelas,
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
-            }else if($model->load($request->post()) && $model->save()  && $kelas->load($request->post()) && $kelas->save() ) {
+            }else if($model->load($request->post()) && $model->save()  ) {
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Siswa ",
@@ -293,12 +295,12 @@ class SiswaController extends Controller
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save()  && $kelas->load($request->post()) && $kelas->save() ) {
+            if ($model->load($request->post()) && $model->save() ) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
                     'model' => $model,
-                    // 'kelas' => $kelas
+                    'kelas' => $kelas
                 ]);
             }
         }

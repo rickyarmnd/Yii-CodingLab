@@ -1,26 +1,24 @@
 <?php
 
-namespace siswa\models;
+namespace admin\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\SiswaRwKelas;
+use common\models\GuruMataPelajaran;
 
 /**
- * SiswaRwKelasSearch represents the model behind the search form about `common\models\SiswaRwKelas`.
+ * GuruPelajaranSearch represents the model behind the search form about `common\models\GuruMataPelajaran`.
  */
-class SiswaRwKelasSearch extends SiswaRwKelas
+class GuruPelajaranSearch extends GuruMataPelajaran
 {
-    public $tahun_ajaran;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'id_siswa', 'id_kelas', 'id_tingkat', 'id_wali_kelas'], 'integer'],
-            [['tahun_ajaran', 'nama_kelas'], 'safe'],
+            [['id_guru', 'id_mata_pelajaran'], 'integer'],
         ];
     }
 
@@ -40,10 +38,9 @@ class SiswaRwKelasSearch extends SiswaRwKelas
      *
      * @return ActiveDataProvider
      */
-    
     public function search($params)
     {
-        $query = SiswaRwKelas::find();
+        $query = GuruMataPelajaran::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -58,15 +55,9 @@ class SiswaRwKelasSearch extends SiswaRwKelas
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
-            'id_siswa' => $this->id_siswa,
-            'id_kelas' => $this->id_kelas,
-            'id_tingkat' => $this->id_tingkat,
-            'id_wali_kelas' => $this->id_wali_kelas,
+            'id_guru' => $this->id_guru,
+            'id_mata_pelajaran' => $this->id_mata_pelajaran,
         ]);
-
-        $query->andFilterWhere(['like', 'tahun_ajaran', $this->tahun_ajaran])
-            ->andFilterWhere(['like', 'nama_kelas', $this->nama_kelas]);
 
         return $dataProvider;
     }

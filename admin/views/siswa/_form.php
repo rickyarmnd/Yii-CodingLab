@@ -3,6 +3,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap4\ActiveForm;
 use kartik\select2\Select2;
+use kartik\date\DatePicker;
+
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Siswa */
@@ -30,7 +32,14 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'tempat_lahir')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'tanggal_lahir')->textInput() ?>
+    <?= $form->field($model, 'tanggal_lahir')->widget(DatePicker::className(),
+        ['options' => ['place holder' => 'Masukkan Tanggal Lahir'],
+        'pluginOptions' => [
+            'autoclose' => true,
+            'format' => 'dd-M-yyyy',
+            ]
+        ]); 
+        ?>
 
   
 	<?php if (!Yii::$app->request->isAjax){ ?>

@@ -6,6 +6,10 @@
  */
 
 use yii\helpers\Html;
+use kartik\icons\Icon;
+
+Icon::map($this);
+
 
 $bundle = yiister\gentelella\assets\Asset::register($this);
 

@@ -44,9 +44,14 @@ class SiswaRwKelasController extends Controller
     public function actionIndex()
     {    
         $id_user = Yii::$app->user->identity->id;
+        // var_dump($id_user);
+        // die;
         $searchModel = new SiswaRwKelasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $siswa = Siswa::find()->where(['id_user' => $id_user])->one();
+        // var_dump($siswa);
+        // die;
+
         $dataProvider->query->andFilterWhere(['id_siswa' => $siswa->id]);
         // var_dump($dataProvider);
         // die;

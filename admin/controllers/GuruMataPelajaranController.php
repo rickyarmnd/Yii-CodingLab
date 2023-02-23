@@ -7,6 +7,7 @@ use common\models\GuruMataPelajaran;
 use common\models\Guru;
 use common\models\MataPelajaran;
 use admin\models\GuruMataPelajaranSearch;
+use admin\models\GuruSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -87,6 +88,7 @@ class GuruMataPelajaranController extends Controller
     {
         $request = Yii::$app->request;
         $model = new GuruMataPelajaran(); 
+        
         $namaGuru = ArrayHelper::map(Guru::find()->all(), 'id', 'nama_guru');
         $mataPelajaran = ArrayHelper::map(MataPelajaran::find()->all(),'id', 'mata_pelajaran');
         if($request->isAjax){
@@ -152,6 +154,67 @@ class GuruMataPelajaranController extends Controller
      * @param integer $id
      * @return mixed
      */
+
+    public function actionPilihGuru($id_guru, $id_mata_pelajaran){
+        $model = new GuruMataPelajaran();
+        $model->id_guru = $id_guru;
+        $model->id_mata_pelajaran = $id_mata_pelajaran;
+        $request = Yii::$app->request;
+        $searchModel = new GuruSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model->save();
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'title'=> "Siswa ",
+                    'forceReload' => '#crud-datatable-pjax',
+                    'content'=>$this->renderAjax('../guru/index2', [      
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'id_mata_pelajaran' => $id_mata_pelajaran,
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+                 ];    
+        }else{
+            return $this->render('../guru/index2', [
+                
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'id_mata_pelajaran' => $id_mata_pelajaran,
+            ]); 
+        }
+    
+   }
+    public function actionBatalPilihGuru($id_guru , $id_mapel){
+        $model =  GuruMataPelajaran::find()->where(['id_mata_pelajaran' => $id_mapel , 'id_guru'=> $id_guru ])->one();
+        $request = Yii::$app->request;
+        $searchModel = new GuruSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model->delete();
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'title'=> "Siswa ",
+                    'forceReload' => '#crud-datatable-pjax',
+                    'content'=>$this->renderAjax('../guru/index2', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'id_mata_pelajaran' => $id_mapel,
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+                 ];    
+        }else{
+            return $this->render('../guru/index2', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'id_mata_pelajaran' => $id_mapel,
+            ]); 
+        }
+   }
+
+
+
+
     public function actionUpdate($id_guru)
     {
         $request = Yii::$app->request;

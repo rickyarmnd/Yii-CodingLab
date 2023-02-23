@@ -51,10 +51,6 @@ class WaliController extends Controller
         
         $siswa_wali = SiswaWali::find()->where(['id_siswa'=> $id_siswa])->asArray()->all(); // muncul id 1 dan 7
         $siswa_wali = array_column($siswa_wali, 'id_wali');
-        // $wali = new Wali();
-        // $wali = $siswa_wali->id_wali;
-        // var_dump($siswa_wali);
-        // die;
         $dataProvider->query->andFilterWhere(['in' , 'id' , $siswa_wali]);
 
         return $this->render('index', [

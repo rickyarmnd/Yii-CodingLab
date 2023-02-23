@@ -9,6 +9,9 @@ use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
+use kartik\icons\Icon;
+
+Icon::map($this);
 
 AppAsset::register($this);
 ?>
@@ -42,7 +45,7 @@ AppAsset::register($this);
             ['label' => 'Daftar Kelas', 'url' => ['/kelas/index']],
             ['label' => 'Mata Pelajaran', 'url' => ['/mata-pelajaran/index']],
             ['label' => 'Guru - Mata Pelajaran', 'url' => ['/guru-mata-pelajaran/index']],
-            ['label' => 'Tes PJAX', 'url' => ['tes-pjax/index']],
+            // ['label' => 'Tes PJAX', 'url' => ['tes-pjax/index']],
         ];
         if (Yii::$app->user->isGuest) {
             $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

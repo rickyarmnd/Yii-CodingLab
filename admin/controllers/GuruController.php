@@ -5,6 +5,7 @@ namespace admin\controllers;
 use Yii;
 use common\models\Guru;
 use common\models\User;
+use common\models\GuruMataPelajaran;
 use admin\models\BuatAkun;
 use common\models\AuthAssignment;
 use admin\models\SignUpForm;
@@ -53,53 +54,40 @@ class GuruController extends Controller
         ]);
     }
 
+    public function actionPilihGuru($id_mata_pelajaran)
+    {    
+        $searchModel = new GuruSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // var_dump($getStatus);
+        // die;
+    
+        $request = Yii::$app->request;
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'title'=> "Siswa ",
+                    'content'=>$this->renderAjax('index2', [
+                    
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'id_mata_pelajaran' => $id_mata_pelajaran,
+                    // 'get_status' => $getStatus,
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+                 ];    
+        }else{
+            return $this->render('index2', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'id_mata_pelajaran' => $id_mata_pelajaran,
 
-    /**
-     * Displays a single Guru model.
-     * @param integer $id
-     * @return mixed
-     */
+                // 'get_status' => $getStatus,
 
-    //  public function actionDaftarAkun($id)
-    //  {
-    //     $request = Yii::$app->request;
-    //     $model = new SignUpForm();
-    //     $namaGuru = Guru::find()->where(['id' => $id])->one();
+            ]); 
+        }
+    }
 
-    //     if($request->isAjax){
-    //         Yii::$app->response->format = Response::FORMAT_JSON;
-    //         if($request->isGet) {
-    //         return [
-    //                 'title'=> "Guru ",
-    //                 'content'=>$this->renderAjax('daftar-akun', [
-    //                     'model' => $model,
-    //                     'namaGuru' => $namaGuru,
-                        
-    //                 ]),
-    //                 'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-    //                         Html::a('Tambah Akun ',['update'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-    //             ];
-            
-    //         }else if($model->load($request->post()) && $model->signup($id, "Guru")){
-    //             return [
-    //                 'forceReload'=>'#crud-datatable-pjax',
-    //                 'title'=> "Tambah Akun Guru",
-    //                 'content'=>'<span class="text-success">Berhasil Membuat Akun</span>',
-    //                 'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
-
-    //             ];
-    //         }else{
-    //             if ($model->load($request->post()) && $model->signup($id, "Guru")) {
-    //                 return $this->redirect(['view', 'id' => $model->id]);
-    //             } else {
-    //                 return $this->render('daftar-akun', [
-    //                     'model' => $model,
-    //                     'namaGuru' => $namaGuru,
-    //                 ]);
-    //             }
-    //         }
-    //     }
-    //     }
+    
     public function actionViewAkun($id)
     {
         $request = Yii::$app->request;
@@ -170,7 +158,6 @@ class GuruController extends Controller
         }
 
     }
-
 
     public function actionView($id)
     {   
