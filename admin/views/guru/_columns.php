@@ -20,8 +20,38 @@ return [
         'attribute'=>'nama_guru',
     ],
     [
+        'class' => 'kartik\grid\ActionColumn',
+        'visible' => $id_mata_pelajaran == NULL ? FALSE:TRUE,
+        'header' => 'Tambah Guru',
+        'template' => '{btn_aksi}',
+        'buttons' => [
+            "btn_aksi" => function ($url, $model, $key) use ($id_mata_pelajaran) {    
+                // $getStatus =  GuruMataPelajaran::find()->where(['id_mata_pelajaran' => $id_mata_pelajaran , 'id_guru'=> $model->id ])->one();
+
+            if($model->cekStatusMataPelajaran($id_mata_pelajaran) == FALSE ){
+                return Html::a('Pilih Guru', ['tambah-guru-pelajaran' ,'id_mata_pelajaran' => $id_mata_pelajaran , 'id_guru' => $model->id ] , [
+                    'class' => 'btn btn-primary btn-block',
+                    'role'  => 'modal-remote',
+                    'title' => 'Pilih',
+                    'data-toggle' => 'tooltip'
+                ]);
+            }else{
+                return Html::a('Batal Pilih', ['tambah-guru-pelajaran' , 'id_guru' => $model->id , 'id_mata_pelajaran' =>$id_mata_pelajaran] , [
+                    'class' => 'btn btn-danger btn-block',
+                    'role'  => 'modal-remote',
+                    'title' => 'Pilih',
+                    'data-toggle' => 'tooltip'
+                ]);
+            }   
+            },
+
+        ]
+    ],
+    [
         'class'=>'\kartik\grid\ActionColumn',
-        'header'=>'Buat Akun',
+        'header'=>'Akun',
+        // 'visible' => $id_mata_pelajaran ?? false,
+        'visible' => $id_mata_pelajaran == NULL ? TRUE:FALSE,
         'template' => '{btn_aksi}',
         'buttons' =>[
             "btn_aksi" => function($url, $model,$key){
@@ -51,6 +81,7 @@ return [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
+        'visible' => $id_mata_pelajaran = NULL ? TRUE:FALSE,
         'urlCreator' => function($action, $model, $key, $index) { 
                 return Url::to([$action, 'id' => $model->id]);
         },

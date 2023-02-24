@@ -42,6 +42,15 @@ class GuruMataPelajaran extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public function setStatusMataPelajaran(){
+        if($model = GuruMataPelajaran::find()->where(['id_guru' => $this->id_guru , 'id_mata_pelajaran' => $this->id_mata_pelajaran])->one()){
+            $model->delete();
+        }else{
+            $this->save();
+        }
+    }
+
     public function getNamaGuru()
     {
         return $this->hasOne(Guru::className(), ['id' => 'id_guru']);
@@ -50,4 +59,8 @@ class GuruMataPelajaran extends \yii\db\ActiveRecord
     {  
         return $this->hasOne(MataPelajaran::className(), ['id' => 'id_mata_pelajaran']);
     }
+    // public function statusGuruPelajaran()
+    // {
+    //     if($model = GuruMataPelajaran::find()->where(['id_guru' => $id_guru , 'id_mata_pelajaran']))    
+    // }
 }

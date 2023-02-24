@@ -28,7 +28,7 @@ CrudAsset::register($this);
                     <div id="ajaxCrudDatatable">
                         <div id="table-responsive">
                         <?=GridView::widget([
-                            'id'=>'crud-datatable',
+                            'id'=>'crud-datatable-mapel-guru-pjax',
                             'pager' => [
                                 'firstPageLabel' => 'Awal',
                                 'lastPageLabel'  => 'Akhir'

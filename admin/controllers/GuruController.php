@@ -10,6 +10,7 @@ use admin\models\BuatAkun;
 use common\models\AuthAssignment;
 use admin\models\SignUpForm;
 use admin\models\GuruSearch;
+// use admin\controllers\GuruSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -43,7 +44,7 @@ class GuruController extends Controller
      * Lists all Guru models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id_mata_pelajaran = null) 
     {    
         $searchModel = new GuruSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -51,10 +52,11 @@ class GuruController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'id_mata_pelajaran' => $id_mata_pelajaran
         ]);
     }
 
-    public function actionPilihGuru($id_mata_pelajaran)
+    public function actionPilihGuru($id_mata_pelajaran = null)
     {    
         $searchModel = new GuruSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -66,7 +68,7 @@ class GuruController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
                     'title'=> "Siswa ",
-                    'content'=>$this->renderAjax('index2', [
+                    'content'=>$this->renderAjax('index', [
                     
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -76,7 +78,7 @@ class GuruController extends Controller
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
                  ];    
         }else{
-            return $this->render('index2', [
+            return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'id_mata_pelajaran' => $id_mata_pelajaran,
@@ -239,6 +241,42 @@ class GuruController extends Controller
         }
        
     }
+
+    public function actionTambahGuruPelajaran($id_mata_pelajaran , $id_guru)
+    {
+        // $searchModel = new GuruSearch();
+        $searchModel = new GuruSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $request = Yii::$app->request;
+        $model = new GuruMataPelajaran();
+        $model->id_guru = $id_guru;
+        $model->id_mata_pelajaran = $id_mata_pelajaran;
+        $model->setStatusMataPelajaran();
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'forceReload'=>'#crud-datatable-mapel-guru-pjax',
+                'title'=> "Pilih Guru",
+                'content'=>$this->renderAjax('index', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'id_mata_pelajaran' => $id_mata_pelajaran,
+                ]),
+                'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+            ];
+        }else{
+            //  return $this->render('index', [
+            //     'searchModel' => $searchModel,
+            //     'dataProvider' => $dataProvider,
+            //     'id_mata_pelajaran' => $id_mata_pelajaran,
+            // ]);
+            return [
+                'forceReload'=>'#crud-datatable-mapel-guru-pjax',
+            ];
+        }
+    }
+
 
     /**
      * Updates an existing Guru model.

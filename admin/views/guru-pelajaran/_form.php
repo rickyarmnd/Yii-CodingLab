@@ -10,8 +10,6 @@ use yii\bootstrap4\ActiveForm;
 
 <div class="guru-mata-pelajaran-form">
 
-<h3>Mata Pelajaran : <?php echo $pelajaran; ?></h3>
-
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'id_guru')->textInput()->label('Nama Guru') ?>

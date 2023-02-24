@@ -47,4 +47,8 @@ class Guru extends \yii\db\ActiveRecord
     public function getIdTingkat(){
         return $this->hasOne(RefTingkatKelas::className(['id' => 'id']));
     }
+
+    public function cekStatusMataPelajaran($id_mata_pelajaran){
+        return $this->hasOne(GuruMataPelajaran::className(), ['id_guru' => 'id'])->andOnCondition(['id_mata_pelajaran' => $id_mata_pelajaran])->exists();
+    }
 }

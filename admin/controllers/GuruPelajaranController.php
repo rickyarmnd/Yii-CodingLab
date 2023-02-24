@@ -232,15 +232,23 @@ class GuruPelajaranController extends Controller
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+            return ['forceClose'=>false,'forceReload'=>'#crud-datatable-pjax'];
         }else{
             /*
             *   Process for non-ajax request
             */
-            return $this->redirect(['index']);
+            return $this->redirect(['index' ,'id_pelajaran' => $id_mata_pelajaran]);
         }
 
 
+    }
+    public function actionDeleteMapel($id)
+    {
+        $model = findModel($id);
+        $id_mapel = $model->id_mata_pelajaran;
+        if ($model->delete()) {
+            return $this->redirect(['index', 'id_mapel'=>$id_mapel ]);
+        }
     }
 
      /**
