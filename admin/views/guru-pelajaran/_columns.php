@@ -14,7 +14,7 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'label' => 'Nama Guru',
-        'attribute'=>'id_guru',
+        'attribute'=>'searchNamaGuru',
         'value' => function($model){
             return $model->namaGuru->nama_guru;
         }
@@ -27,10 +27,13 @@ return [
             "Hapus" => function ($url, $model, $key) {
                 return Html::a('Hapus', ['delete' , 'id_guru'=> $model->id_guru ,'id_mata_pelajaran' => $model->id_mata_pelajaran ] , [
                     'class' => 'btn btn-danger btn-block',
-                    'data-method'=>'POST',
-                    // 'role'  => 'modal-remote',
+                    'data-method'=>false,
+                    'data-request-method'=>'post',
+                    'role'  => 'modal-remote',
                     'title' => 'Hapus',
-                    'data-toggle' => 'tooltip'
+                    'data-toggle' => 'tooltip',
+                    'data-confirm-title'=>'Peringatan',
+                    'data-confirm-message'=>'Apakah anda yakin ingin menghapus data ini?'
                 ]);
             },
 

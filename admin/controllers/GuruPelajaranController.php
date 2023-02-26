@@ -231,8 +231,8 @@ class GuruPelajaranController extends Controller
             /*
             *   Process for ajax request
             */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>false,'forceReload'=>'#crud-datatable-pjax'];
+            Yii::$app->response->format = Response::FORMAT_JSON;        
+            return $this->redirect(['index','id_pelajaran' => $id_mata_pelajaran]);
         }else{
             /*
             *   Process for non-ajax request
@@ -273,7 +273,8 @@ class GuruPelajaranController extends Controller
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax',
+        ];
         }else{
             /*
             *   Process for non-ajax request

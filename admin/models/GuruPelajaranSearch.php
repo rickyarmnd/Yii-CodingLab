@@ -12,6 +12,8 @@ use common\models\GuruMataPelajaran;
  */
 class GuruPelajaranSearch extends GuruMataPelajaran
 {
+    public $searchNamaGuru;
+
     /**
      * @inheritdoc
      */
@@ -19,6 +21,8 @@ class GuruPelajaranSearch extends GuruMataPelajaran
     {
         return [
             [['id_guru', 'id_mata_pelajaran'], 'integer'],
+            [['searchNamaGuru'], 'string']
+
         ];
     }
 
@@ -40,7 +44,7 @@ class GuruPelajaranSearch extends GuruMataPelajaran
      */
     public function search($params)
     {
-        $query = GuruMataPelajaran::find();
+        $query = GuruMataPelajaran::find()->joinWith(['namaGuru']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -58,7 +62,9 @@ class GuruPelajaranSearch extends GuruMataPelajaran
             'id_guru' => $this->id_guru,
             'id_mata_pelajaran' => $this->id_mata_pelajaran,
         ]);
-
+        $query->andFilterWhere(['ilike', 'guru.nama_guru', $this->searchNamaGuru]);
+        // var_dump($query->createCommand()->rawSql);
+        // die;
         return $dataProvider;
     }
 }

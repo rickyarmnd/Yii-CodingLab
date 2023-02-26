@@ -6,12 +6,17 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\GuruMataPelajaran;
+use common\models\Guru;
+use common\models\MataPelajaran;
 
 /**
  * GuruMataPelajaranSearch represents the model behind the search form about `common\models\GuruMataPelajaran`.
  */
 class GuruMataPelajaranSearch extends GuruMataPelajaran
 {
+
+    public $searchNamaGuru;
+
     /**
      * @inheritdoc
      */
@@ -19,6 +24,7 @@ class GuruMataPelajaranSearch extends GuruMataPelajaran
     {
         return [
             [['id_guru', 'id_mata_pelajaran',], 'integer'],
+            [['searchNamaGuru'], 'string']
         ];
     }
 
@@ -40,7 +46,8 @@ class GuruMataPelajaranSearch extends GuruMataPelajaran
      */
     public function search($params)
     {
-        $query = GuruMataPelajaran::find();
+        $query = GuruMataPelajaran::find()->joinWith(['namaGuru']);
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -51,6 +58,7 @@ class GuruMataPelajaranSearch extends GuruMataPelajaran
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
+            
             return $dataProvider;
         }
 
@@ -59,7 +67,7 @@ class GuruMataPelajaranSearch extends GuruMataPelajaran
             'id_mata_pelajaran' => $this->id_mata_pelajaran,
             // 'id' => $this->id,
         ]);
-
+        $query->andFilterWhere(['ilike', 'guru.nama_guru', $this->searchNamaGuru]);
         return $dataProvider;
     }
 }

@@ -67,9 +67,8 @@ class GuruController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "Siswa ",
+                    'title'=> "Daftar Guru",
                     'content'=>$this->renderAjax('index', [
-                    
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
                     'id_mata_pelajaran' => $id_mata_pelajaran,
