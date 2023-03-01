@@ -16,6 +16,7 @@ class GuruMataPelajaranSearch extends GuruMataPelajaran
 {
 
     public $searchNamaGuru;
+    public $searchMataPelajaran;
 
     /**
      * @inheritdoc
@@ -24,7 +25,7 @@ class GuruMataPelajaranSearch extends GuruMataPelajaran
     {
         return [
             [['id_guru', 'id_mata_pelajaran',], 'integer'],
-            [['searchNamaGuru'], 'string']
+            [['searchNamaGuru' , 'searchMataPelajaran'], 'string']
         ];
     }
 
@@ -46,7 +47,8 @@ class GuruMataPelajaranSearch extends GuruMataPelajaran
      */
     public function search($params)
     {
-        $query = GuruMataPelajaran::find()->joinWith(['namaGuru']);
+        $query = GuruMataPelajaran::find()->joinWith(['namaGuru', 'mataPelajaran']);
+        // $query = GuruMataPelajaran::find()->joinWith(['mataPelajaran']);
 
 
         $dataProvider = new ActiveDataProvider([
@@ -54,6 +56,16 @@ class GuruMataPelajaranSearch extends GuruMataPelajaran
         ]);
 
         $this->load($params);
+
+        $dataProvider->sort->attributes['searchNamaGuru'] = [
+            'asc' => ['guru.nama_guru' => SORT_ASC],
+            'desc' => ['guru.nama_guru' => SORT_DESC]
+        ];
+
+        $dataProvider->sort->attributes['searchMataPelajaran'] = [
+            'asc' => ['mata_pelajaran.mata_pelajaran' => SORT_ASC],
+            'desc' => ['mata_pelajaran.mata_pelajaran' => SORT_DESC]
+        ];
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -67,7 +79,8 @@ class GuruMataPelajaranSearch extends GuruMataPelajaran
             'id_mata_pelajaran' => $this->id_mata_pelajaran,
             // 'id' => $this->id,
         ]);
-        $query->andFilterWhere(['ilike', 'guru.nama_guru', $this->searchNamaGuru]);
+        $query->andFilterWhere(['ilike', 'guru.nama_guru', $this->searchNamaGuru])
+              ->andFilterWhere(['ilike', 'mata_pelajaran.mata_pelajaran', $this->searchMataPelajaran]);
         return $dataProvider;
     }
 }

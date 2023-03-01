@@ -52,6 +52,11 @@ class GuruPelajaranSearch extends GuruMataPelajaran
 
         $this->load($params);
 
+        $dataProvider->sort->attributes['searchNamaGuru'] = [
+            'asc' => ['guru.nama_guru' => SORT_ASC],
+            'desc' => ['guru.nama_guru' => SORT_DESC]
+        ];
+        
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

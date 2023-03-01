@@ -13,7 +13,7 @@ return [
         [
         'class'=>'\kartik\grid\DataColumn',
         'label' => 'Nama Guru',
-        'attribute'=>'id_guru',
+        'attribute'=>'searchNamaGuru',
         'value' => function($model){
             return $model->namaGuru->nama_guru;
         }
@@ -21,7 +21,7 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'label' => 'Mata Pelajaran',
-        'attribute'=>'id_mata_pelajaran',
+        'attribute'=>'searchMataPelajaran',
         'value' => function($model){
             return $model->mataPelajaran->mata_pelajaran;
         }
